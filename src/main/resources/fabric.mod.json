@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "multiple-server-lists",
+  "version": "${version}",
+  "name": "Multiple Server Lists",
+  "description": "Adds more server lists",
+  "authors": [
+    "MrMelon54"
+  ],
+  "contact": {
+    "homepage": "https://minecraft.onpointcoding.net/mods/multipleserverlists",
+    "sources": "https://github.com/MrMelon54/multiple-server-lists-fabric"
+  },
+  "license": "MIT",
+  "icon": "assets/multiple-server-lists/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.onpointcoding.multipleserverlists.client.MultipleServerListsClient"
+    ]
+  },
+  "mixins": [
+    "multiple-server-lists.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "fabric": "*",
+    "minecraft": "1.17.x"
+  }
+}
