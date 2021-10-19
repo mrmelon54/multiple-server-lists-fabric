@@ -3,6 +3,7 @@ package net.onpointcoding.multipleserverlists.util;
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.ServerList;
@@ -20,12 +21,14 @@ import java.util.List;
 public class CustomFileServerList extends ServerList {
     private static final Logger LOGGER = LogManager.getLogger();
     private File serversWrapperFolder;
+    private String listName;
     private List<ServerInfo> customServers;
     private final int pageIndex;
 
     public CustomFileServerList(MinecraftClient client, int pageIndex) {
         super(client);
         this.pageIndex = pageIndex;
+        this.listName = "Page " + pageIndex;
         this.loadFile();
     }
 
@@ -39,20 +42,19 @@ public class CustomFileServerList extends ServerList {
                 this.serversWrapperFolder = new File(MinecraftClient.getInstance().runDirectory, "s760");
             if (serversWrapperFolder.exists() || serversWrapperFolder.mkdirs()) {
                 NbtCompound nbtCompound = NbtIo.read(new File(serversWrapperFolder, "servers" + pageIndex + ".dat"));
-                if (nbtCompound == null) {
+                if (nbtCompound == null)
                     return;
-                }
 
-                NbtList nbtList = nbtCompound.getList("servers", 10);
+                if (nbtCompound.contains("name", NbtType.STRING))
+                    listName = nbtCompound.getString("name");
+                NbtList nbtList = nbtCompound.getList("servers", NbtType.COMPOUND);
 
-                for (int i = 0; i < nbtList.size(); ++i) {
+                for (int i = 0; i < nbtList.size(); ++i)
                     this.customServers.add(ServerInfo.fromNbt(nbtList.getCompound(i)));
-                }
             }
         } catch (Exception var4) {
             LOGGER.error("Couldn't load server list", var4);
         }
-
     }
 
     @Override
@@ -67,6 +69,7 @@ public class CustomFileServerList extends ServerList {
             for (ServerInfo serverInfo : this.customServers) nbtList.add(serverInfo.toNbt());
 
             NbtCompound nbtCompound = new NbtCompound();
+            nbtCompound.putString("name", listName);
             nbtCompound.put("servers", nbtList);
             File file = File.createTempFile("servers" + pageIndex, ".dat", this.serversWrapperFolder);
             NbtIo.write(nbtCompound, file);
@@ -76,7 +79,20 @@ public class CustomFileServerList extends ServerList {
         } catch (Exception var6) {
             LOGGER.error("Couldn't save server list", var6);
         }
+    }
 
+    public void deleteFile() {
+        try {
+            if (this.customServers == null)
+                this.customServers = Lists.newArrayList();
+            if (this.serversWrapperFolder == null)
+                this.serversWrapperFolder = new File(MinecraftClient.getInstance().runDirectory, "s760");
+
+            File file3 = new File(this.serversWrapperFolder, "servers" + pageIndex + ".dat");
+            file3.delete();
+        } catch (Exception var6) {
+            LOGGER.error("Couldn't remove the server list", var6);
+        }
     }
 
     public ServerInfo get(int index) {
@@ -106,18 +122,11 @@ public class CustomFileServerList extends ServerList {
         this.customServers.set(index, serverInfo);
     }
 
-    public static void updateServerListEntry(ServerInfo e) {
-        net.minecraft.client.option.ServerList serverList = new net.minecraft.client.option.ServerList(MinecraftClient.getInstance());
-        serverList.loadFile();
+    public String getName() {
+        return listName;
+    }
 
-        for (int i = 0; i < serverList.size(); ++i) {
-            ServerInfo serverInfo = serverList.get(i);
-            if (serverInfo.name.equals(e.name) && serverInfo.address.equals(e.address)) {
-                serverList.set(i, e);
-                break;
-            }
-        }
-
-        serverList.saveFile();
+    public void setName(String value) {
+        listName = value;
     }
 }

@@ -17,6 +17,9 @@
   "entrypoints": {
     "client": [
       "net.onpointcoding.multipleserverlists.client.MultipleServerListsClient"
+    ],
+    "modmenu": [
+      "net.onpointcoding.multipleserverlists.ModMenuIntegration"
     ]
   },
   "mixins": [

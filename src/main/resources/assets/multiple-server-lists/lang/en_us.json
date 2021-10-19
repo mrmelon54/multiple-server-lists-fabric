@@ -1,0 +1,10 @@
+{
+  "multiple-server-lists.screen.safe-uninstall.title": "Safe Uninstall",
+  "multiple-server-lists.screen.safe-uninstall.info": "Your server lists have been merged into a single server list and this mod can now be removed safely without losing access to your servers",
+  "multiple-server-lists.screen.safe-uninstall.ok": "OK",
+  "multiple-server-lists.screen.settings.title": "Multiple Server Lists",
+  "multiple-server-lists.screen.settings.safe-uninstall": "Safe Uninstall",
+  "multiple-server-lists.screen.edit-list-name.title": "Edit Server List Name",
+  "multiple-server-lists.screen.edit-list-name.button.rename": "Rename",
+  "multiple-server-lists.screen.edit-list-name.button.cancel": "Cancel"
+}

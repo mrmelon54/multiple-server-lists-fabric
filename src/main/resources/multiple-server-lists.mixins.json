@@ -4,7 +4,9 @@
   "package": "net.onpointcoding.multipleserverlists.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "MultiplayerScreenMixin"
+    "EntryListWidgetMixin",
+    "MultiplayerScreenMixin",
+    "ServerEntryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
