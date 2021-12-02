@@ -119,7 +119,7 @@ public class EditListNameScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (this.client != null && this.parent != null) this.client.openScreen(this.parent);
+        if (this.client != null && this.parent != null) this.client.setScreen(this.parent);
         else super.onClose();
     }
 }

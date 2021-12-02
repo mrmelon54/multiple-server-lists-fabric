@@ -33,7 +33,7 @@ public class MultipleServerListsSettingsGui extends LightweightGuiDescription {
         resetBtn.setOnClick(() -> {
             multipleServerListsClient.safeUninstallForVanilla();
             MinecraftClient mc = MinecraftClient.getInstance();
-            mc.openScreen(new UninstallInfoScreen(new UninstallInfoGui(), mc.currentScreen));
+            mc.setScreen(new UninstallInfoScreen(new UninstallInfoGui(), mc.currentScreen));
         });
         root.add(resetBtn, 0, 20, root.getWidth(), 18);
 

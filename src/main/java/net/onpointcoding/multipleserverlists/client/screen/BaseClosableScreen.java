@@ -18,6 +18,6 @@ public class BaseClosableScreen extends CottonClientScreen {
     @Override
     public void onClose() {
         if (this.client != null)
-            this.client.openScreen(parent);
+            this.client.setScreen(parent);
     }
 }

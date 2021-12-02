@@ -65,7 +65,7 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
             if (serverList instanceof CustomFileServerList customFileServerList) {
                 EditListNameScreen editListNameScreen = new EditListNameScreen(new TranslatableText("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
                 if (this.client != null)
-                    this.client.openScreen(editListNameScreen);
+                    this.client.setScreen(editListNameScreen);
             }
         }));
         reloadServerList();
@@ -116,7 +116,7 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
         MultiplayerScreen multiplayerScreen = new MultiplayerScreen(this.parent);
         if (multiplayerScreen instanceof MultiplayerScreenDuckProvider duckProvider)
             duckProvider.setCurrentTab(currentTab);
-        MinecraftClient.getInstance().openScreen(multiplayerScreen);
+        MinecraftClient.getInstance().setScreen(multiplayerScreen);
         ci.cancel();
     }
 

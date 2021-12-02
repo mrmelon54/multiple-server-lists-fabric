@@ -10,7 +10,7 @@ public class UninstallInfoScreen extends BaseClosableScreen {
         super(description, parent);
         if (description instanceof UninstallInfoGui uninstallInfoGui) {
             if (parent == null)
-                uninstallInfoGui.setCloseInfoCallback(() -> MinecraftClient.getInstance().openScreen(null));
+                uninstallInfoGui.setCloseInfoCallback(() -> MinecraftClient.getInstance().setScreen(null));
             else
                 uninstallInfoGui.setCloseInfoCallback(parent::onClose);
         }
