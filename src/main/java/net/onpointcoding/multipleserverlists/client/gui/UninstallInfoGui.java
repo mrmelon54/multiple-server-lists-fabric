@@ -15,23 +15,23 @@ public class UninstallInfoGui extends LightweightGuiDescription {
     public UninstallInfoGui() {
         WPlainPanel root = new WPlainPanel();
         setRootPanel(root);
-        root.setSize(200, 50);
+        root.setSize(200, 100);
         root.setInsets(Insets.ROOT_PANEL);
         root.setBackgroundPainter(BackgroundPainter.VANILLA);
         root.setHost(this);
 
-        WLabel label = new WLabel(new TranslatableText("multiple-server-lists.screen.settings.title"));
+        WLabel label = new WLabel(new TranslatableText("multiple-server-lists.screen.safe-uninstall.title"));
         root.add(label, 0, 0, root.getWidth(), 18);
 
-        WText text = new WText(new TranslatableText("multiple-server-lists.screen.uninstall-info.info"));
+        WText text = new WText(new TranslatableText("multiple-server-lists.screen.safe-uninstall.info"));
         root.add(text, 0, 20, root.getWidth(), root.getHeight() - 40);
 
-        WButton okBtn = new WButton(new TranslatableText("multiple-server-lists.screen.uninstall-info.ok"));
+        WButton okBtn = new WButton(new TranslatableText("multiple-server-lists.screen.safe-uninstall.ok"));
         okBtn.setOnClick(() -> {
             if (closeInfoCallback != null)
                 closeInfoCallback.run();
         });
-        root.add(okBtn, 0, 20, root.getWidth(), 18);
+        root.add(okBtn, 0, root.getHeight() - 20, root.getWidth(), 18);
 
         root.validate(this);
     }
