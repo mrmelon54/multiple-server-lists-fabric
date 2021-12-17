@@ -107,6 +107,10 @@ public class CustomFileServerList extends ServerList {
         this.customServers.add(serverInfo);
     }
 
+    public void add(int index, ServerInfo serverInfo) {
+        this.customServers.add(index, serverInfo);
+    }
+
     public int size() {
         return this.customServers.size();
     }
