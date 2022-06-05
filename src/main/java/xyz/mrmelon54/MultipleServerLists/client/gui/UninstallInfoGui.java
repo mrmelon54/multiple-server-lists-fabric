@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.client.gui;
+package xyz.mrmelon54.MultipleServerLists.client.gui;
 
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;

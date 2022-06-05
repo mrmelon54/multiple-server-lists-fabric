@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.mixin;
+package xyz.mrmelon54.MultipleServerLists.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawableHelper;
@@ -6,7 +6,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.onpointcoding.multipleserverlists.duck.ServerEntryDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.ServerEntryDuckProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

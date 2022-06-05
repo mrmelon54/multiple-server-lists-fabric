@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.client.gui;
+package xyz.mrmelon54.MultipleServerLists.client.gui;
 
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
@@ -10,12 +10,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.TranslatableText;
-import net.onpointcoding.multipleserverlists.client.MultipleServerListsClient;
-import net.onpointcoding.multipleserverlists.client.screen.UninstallInfoScreen;
+import xyz.mrmelon54.MultipleServerLists.client.MultipleServerListsClient;
+import xyz.mrmelon54.MultipleServerLists.client.screen.UninstallInfoScreen;
 
 @Environment(EnvType.CLIENT)
 public class MultipleServerListsSettingsGui extends LightweightGuiDescription {
-
     public MultipleServerListsSettingsGui() {
         WPlainPanel root = new WPlainPanel();
         setRootPanel(root);

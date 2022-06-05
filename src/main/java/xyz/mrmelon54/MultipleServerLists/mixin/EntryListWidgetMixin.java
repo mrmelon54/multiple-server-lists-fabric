@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.mixin;
+package xyz.mrmelon54.MultipleServerLists.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
@@ -7,9 +7,9 @@ import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.ServerList;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.onpointcoding.multipleserverlists.duck.EntryListWidgetDuckProvider;
-import net.onpointcoding.multipleserverlists.duck.MultiplayerScreenDuckProvider;
-import net.onpointcoding.multipleserverlists.duck.ServerEntryDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.ServerEntryDuckProvider;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.client.screen;
+package xyz.mrmelon54.MultipleServerLists.client.screen;
 
 import io.github.cottonmc.cotton.gui.GuiDescription;
 import net.fabricmc.api.EnvType;

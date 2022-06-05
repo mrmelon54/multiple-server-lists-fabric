@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.client.screen;
+package xyz.mrmelon54.MultipleServerLists.client.screen;
 
 import io.github.cottonmc.cotton.gui.GuiDescription;
 import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
@@ -16,7 +16,7 @@ public class BaseClosableScreen extends CottonClientScreen {
     }
 
     @Override
-    public void onClose() {
+    public void close() {
         if (this.client != null)
             this.client.setScreen(parent);
     }

@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.client.screen;
+package xyz.mrmelon54.MultipleServerLists.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
@@ -12,7 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.onpointcoding.multipleserverlists.util.CustomFileServerList;
+import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
@@ -40,7 +40,7 @@ public class EditListNameScreen extends Screen {
         this.y = (this.height - backgroundHeight) / 2;
 
         if (this.serverList == null) {
-            onClose();
+            close();
             return;
         }
 
@@ -49,10 +49,10 @@ public class EditListNameScreen extends Screen {
             if (isValidName(a)) {
                 serverList.setName(a);
                 serverList.saveFile();
-                onClose();
+                close();
             }
         }));
-        this.addDrawableChild(new ButtonWidget(this.x + 119, this.y + 45, 50, 20, new TranslatableText("multiple-server-lists.screen.edit-list-name.button.cancel"), (button) -> onClose()));
+        this.addDrawableChild(new ButtonWidget(this.x + 119, this.y + 45, 50, 20, new TranslatableText("multiple-server-lists.screen.edit-list-name.button.cancel"), (button) -> close()));
 
         this.nameField = new TextFieldWidget(this.textRenderer, this.x + 62, this.y + 24, 103, 12, new TranslatableText("container.repair"));
         this.nameField.setFocusUnlocked(false);
@@ -118,8 +118,8 @@ public class EditListNameScreen extends Screen {
     }
 
     @Override
-    public void onClose() {
+    public void close() {
         if (this.client != null && this.parent != null) this.client.setScreen(this.parent);
-        else super.onClose();
+        else super.close();
     }
 }

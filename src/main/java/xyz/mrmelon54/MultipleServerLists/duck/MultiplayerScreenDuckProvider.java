@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.duck;
+package xyz.mrmelon54.MultipleServerLists.duck;
 
 import net.minecraft.client.option.ServerList;
 

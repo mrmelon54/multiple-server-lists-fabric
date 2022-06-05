@@ -1,11 +1,11 @@
-package net.onpointcoding.multipleserverlists.client;
+package xyz.mrmelon54.MultipleServerLists.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.ServerList;
-import net.onpointcoding.multipleserverlists.util.CustomFileServerList;
+import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 
 import java.io.File;
 import java.util.ArrayList;

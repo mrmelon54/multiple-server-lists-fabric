@@ -1,9 +1,9 @@
-package net.onpointcoding.multipleserverlists.client.screen;
+package xyz.mrmelon54.MultipleServerLists.client.screen;
 
 import io.github.cottonmc.cotton.gui.GuiDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.onpointcoding.multipleserverlists.client.gui.UninstallInfoGui;
+import xyz.mrmelon54.MultipleServerLists.client.gui.UninstallInfoGui;
 
 public class UninstallInfoScreen extends BaseClosableScreen {
     public UninstallInfoScreen(GuiDescription description, Screen parent) {
@@ -12,7 +12,7 @@ public class UninstallInfoScreen extends BaseClosableScreen {
             if (parent == null)
                 uninstallInfoGui.setCloseInfoCallback(() -> MinecraftClient.getInstance().setScreen(null));
             else
-                uninstallInfoGui.setCloseInfoCallback(parent::onClose);
+                uninstallInfoGui.setCloseInfoCallback(parent::close);
         }
     }
 }

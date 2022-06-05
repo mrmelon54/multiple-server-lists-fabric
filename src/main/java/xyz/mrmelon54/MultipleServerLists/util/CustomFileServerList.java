@@ -1,4 +1,4 @@
-package net.onpointcoding.multipleserverlists.util;
+package xyz.mrmelon54.MultipleServerLists.util;
 
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
