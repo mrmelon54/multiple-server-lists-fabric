@@ -9,7 +9,8 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import xyz.mrmelon54.MultipleServerLists.client.MultipleServerListsClient;
 import xyz.mrmelon54.MultipleServerLists.client.screen.UninstallInfoScreen;
 
@@ -25,10 +26,10 @@ public class MultipleServerListsSettingsGui extends LightweightGuiDescription {
 
         MultipleServerListsClient multipleServerListsClient = MultipleServerListsClient.getInstance();
 
-        WLabel label = new WLabel(new TranslatableText("multiple-server-lists.screen.settings.title"));
+        WLabel label = new WLabel(Text.translatable("multiple-server-lists.screen.settings.title"));
         root.add(label, 0, 0, root.getWidth(), 18);
 
-        WButton resetBtn = new WButton(new TranslatableText("multiple-server-lists.screen.settings.safe-uninstall"));
+        WButton resetBtn = new WButton(Text.translatable("multiple-server-lists.screen.settings.safe-uninstall"));
         resetBtn.setOnClick(() -> {
             multipleServerListsClient.safeUninstallForVanilla();
             MinecraftClient mc = MinecraftClient.getInstance();

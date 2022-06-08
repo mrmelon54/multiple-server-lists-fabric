@@ -56,7 +56,7 @@ public class MultipleServerListsClient implements ClientModInitializer {
             for (int a : availableTabs) {
                 ServerList currentTab = getServerListForTab(mc, a);
                 currentTab.loadFile();
-                for (int i = 0; i < currentTab.size(); i++) mainTab.add(currentTab.get(i));
+                for (int i = 0; i < currentTab.size(); i++) mainTab.add(currentTab.get(i),false);
             }
             mainTab.saveFile();
 

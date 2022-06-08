@@ -9,9 +9,9 @@ import net.minecraft.client.option.ServerList;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
 import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
 import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
@@ -49,21 +49,21 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
         if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
             entryListWidgetDuckProvider.setRefreshCallback(this::reloadServerList);
 
-        this.addDrawableChild(new ButtonWidget(0, 0, 20, 20, new LiteralText("<"), (button) -> {
+        this.addDrawableChild(new ButtonWidget(0, 0, 20, 20, Text.literal("<"), (button) -> {
             currentTab--;
             if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                 entryListWidgetDuckProvider.resetScrollPosition();
             reloadServerList();
         }));
-        this.addDrawableChild(new ButtonWidget(20, 0, 20, 20, new LiteralText(">"), (button) -> {
+        this.addDrawableChild(new ButtonWidget(20, 0, 20, 20, Text.literal(">"), (button) -> {
             currentTab++;
             if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                 entryListWidgetDuckProvider.resetScrollPosition();
             reloadServerList();
         }));
-        this.editServerListNameButton = this.addDrawableChild(new ButtonWidget(40, 0, 20, 20, new LiteralText(""), (button) -> {
+        this.editServerListNameButton = this.addDrawableChild(new ButtonWidget(40, 0, 20, 20, Text.literal(""), (button) -> {
             if (serverList instanceof CustomFileServerList customFileServerList) {
-                EditListNameScreen editListNameScreen = new EditListNameScreen(new TranslatableText("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
+                EditListNameScreen editListNameScreen = new EditListNameScreen(Text.translatable("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
                 if (this.client != null)
                     this.client.setScreen(editListNameScreen);
             }
@@ -77,12 +77,12 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
             if (featherStack != null)
                 this.client.getItemRenderer().renderInGui(featherStack, 42, 2);
             if (currentTab == 0) {
-                this.client.textRenderer.draw(matrices, new LiteralText("Main"), 64, 6, 0xffffff);
+                this.client.textRenderer.draw(matrices, Text.literal("Main"), 64, 6, 0xffffff);
             } else {
                 if (serverList instanceof CustomFileServerList customFileServerList)
-                    this.client.textRenderer.draw(matrices, new LiteralText(customFileServerList.getName()), 64, 6, 0xffffff);
+                    this.client.textRenderer.draw(matrices, Text.literal(customFileServerList.getName()), 64, 6, 0xffffff);
                 else
-                    this.client.textRenderer.draw(matrices, new LiteralText("Page " + currentTab), 64, 6, 0xffffff);
+                    this.client.textRenderer.draw(matrices, Text.literal("Page " + currentTab), 64, 6, 0xffffff);
             }
         }
     }

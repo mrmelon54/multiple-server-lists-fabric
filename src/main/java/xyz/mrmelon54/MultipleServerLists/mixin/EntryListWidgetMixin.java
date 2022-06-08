@@ -122,7 +122,7 @@ public abstract class EntryListWidgetMixin<E extends EntryListWidget.Entry<E>> i
                             // Grab and move
                             ServerInfo serverInfo = firstServerList.get(pIdx);
                             firstServerList.remove(serverInfo);
-                            secondServerList.add(serverInfo);
+                            secondServerList.add(serverInfo, false);
 
                             // Save
                             firstServerList.saveFile();

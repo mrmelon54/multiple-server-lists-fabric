@@ -7,7 +7,8 @@ import io.github.cottonmc.cotton.gui.widget.WLabel;
 import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
 import io.github.cottonmc.cotton.gui.widget.WText;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 
 public class UninstallInfoGui extends LightweightGuiDescription {
     private Runnable closeInfoCallback;
@@ -20,13 +21,13 @@ public class UninstallInfoGui extends LightweightGuiDescription {
         root.setBackgroundPainter(BackgroundPainter.VANILLA);
         root.setHost(this);
 
-        WLabel label = new WLabel(new TranslatableText("multiple-server-lists.screen.safe-uninstall.title"));
+        WLabel label = new WLabel(Text.translatable("multiple-server-lists.screen.safe-uninstall.title"));
         root.add(label, 0, 0, root.getWidth(), 18);
 
-        WText text = new WText(new TranslatableText("multiple-server-lists.screen.safe-uninstall.info"));
+        WText text = new WText(Text.translatable("multiple-server-lists.screen.safe-uninstall.info"));
         root.add(text, 0, 20, root.getWidth(), root.getHeight() - 40);
 
-        WButton okBtn = new WButton(new TranslatableText("multiple-server-lists.screen.safe-uninstall.ok"));
+        WButton okBtn = new WButton(Text.translatable("multiple-server-lists.screen.safe-uninstall.ok"));
         okBtn.setOnClick(() -> {
             if (closeInfoCallback != null)
                 closeInfoCallback.run();

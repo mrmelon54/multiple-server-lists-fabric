@@ -10,7 +10,7 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 import org.lwjgl.glfw.GLFW;
@@ -44,7 +44,7 @@ public class EditListNameScreen extends Screen {
             return;
         }
 
-        this.renameButton = this.addDrawableChild(new ButtonWidget(this.x + 7, this.y + 45, 50, 20, new TranslatableText("multiple-server-lists.screen.edit-list-name.button.rename"), (button) -> {
+        this.renameButton = this.addDrawableChild(new ButtonWidget(this.x + 7, this.y + 45, 50, 20, Text.translatable("multiple-server-lists.screen.edit-list-name.button.rename"), (button) -> {
             String a = this.nameField.getText();
             if (isValidName(a)) {
                 serverList.setName(a);
@@ -52,9 +52,9 @@ public class EditListNameScreen extends Screen {
                 close();
             }
         }));
-        this.addDrawableChild(new ButtonWidget(this.x + 119, this.y + 45, 50, 20, new TranslatableText("multiple-server-lists.screen.edit-list-name.button.cancel"), (button) -> close()));
+        this.addDrawableChild(new ButtonWidget(this.x + 119, this.y + 45, 50, 20, Text.translatable("multiple-server-lists.screen.edit-list-name.button.cancel"), (button) -> close()));
 
-        this.nameField = new TextFieldWidget(this.textRenderer, this.x + 62, this.y + 24, 103, 12, new TranslatableText("container.repair"));
+        this.nameField = new TextFieldWidget(this.textRenderer, this.x + 62, this.y + 24, 103, 12, Text.translatable("container.repair"));
         this.nameField.setFocusUnlocked(false);
         this.nameField.setEditableColor(-1);
         this.nameField.setUneditableColor(-1);
