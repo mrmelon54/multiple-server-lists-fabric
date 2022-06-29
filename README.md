@@ -4,7 +4,7 @@
 
 Requires the [Fabric Loader](https://fabricmc.net/use/) and [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 
-Logo made by [CarbonGhost](https://github.com/CarbonGhost)
+Logo made by [@CarbonGhost](https://github.com/CarbonGhost)
 
 ## Setup
 
@@ -21,3 +21,4 @@ This mod adds multiple server lists that can be switched with arrows to change p
 ## Download
 
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/multiple-server-lists)
+- [Modrinth](https://modrinth.com/mod/multiple-server-lists)
