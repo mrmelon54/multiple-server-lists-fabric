@@ -6,7 +6,8 @@
   "client": [
     "EntryListWidgetMixin",
     "MultiplayerScreenMixin",
-    "ServerEntryMixin"
+    "ServerEntryMixin",
+    "ServerListMixin"
   ],
   "injectors": {
     "defaultRequire": 1
