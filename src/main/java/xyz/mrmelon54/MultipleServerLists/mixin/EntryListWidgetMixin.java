@@ -74,7 +74,7 @@ public abstract class EntryListWidgetMixin<E extends EntryListWidget.Entry<E>> i
     private double scrollAmount;
 
     @Inject(method = "renderList", at = @At("TAIL"))
-    private void injectedRenderList(MatrixStack matrices, int x, int y, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void injectedRenderList(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         //noinspection ConstantConditions
         if (((Object) this) instanceof MultiplayerServerListWidget) {
             E pEntry = this.getEntryAtOffsetY(mouseY);
