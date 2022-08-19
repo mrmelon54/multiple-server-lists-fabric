@@ -59,7 +59,7 @@ public class EditListNameScreen extends Screen {
         this.nameField.setEditableColor(-1);
         this.nameField.setUneditableColor(-1);
         this.nameField.setDrawsBackground(false);
-        this.nameField.setMaxLength(50);
+        this.nameField.setMaxLength(100);
         this.nameField.setChangedListener(this::onRenamed);
         this.nameField.setText(this.serverList.getName());
         this.addSelectableChild(this.nameField);

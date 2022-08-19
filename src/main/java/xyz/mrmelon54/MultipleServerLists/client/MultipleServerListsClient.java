@@ -29,6 +29,7 @@ public class MultipleServerListsClient implements ClientModInitializer {
         return instance;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void safeUninstallForVanilla() {
         MinecraftClient mc = MinecraftClient.getInstance();
         File serversWrapperFolder = new File(mc.runDirectory, "s760");
