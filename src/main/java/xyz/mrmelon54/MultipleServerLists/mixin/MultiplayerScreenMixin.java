@@ -1,8 +1,7 @@
 package xyz.mrmelon54.MultipleServerLists.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
@@ -11,24 +10,25 @@ import net.minecraft.client.option.ServerList;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Identifier;
-import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
-import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
-import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
-import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
+import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.gui.TabWidget;
+import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
+
+import java.util.function.Predicate;
 
 @Mixin(MultiplayerScreen.class)
 public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenDuckProvider {
-    private static Identifier SERVER_TABS_TEXTURE = new Identifier("multiple-server-lists", "textures/gui/server-tabs.png");
     private int currentTab = 0;
     private ButtonWidget editServerListNameButton;
     private ItemStack featherStack;
@@ -73,13 +73,22 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
             }
         }));
         reloadServerList();
+        refreshTabs();
+    }
+
+    private void refreshTabs() {
+        this.children().removeIf((Predicate<Element>) element -> element instanceof TabWidget);
+        this.addDrawableChild(new TabWidget(0, 32, 200, 20, Text.literal("First Tab"), button -> System.out.println("Pressed Tab")));
+    }
+
+    @ModifyConstant(method = "init", constant = @Constant(intValue = 32))
+    private int changeServerListTop(int constant) {
+        return 52;
     }
 
     @Inject(method = "render", at = @At("TAIL"))
     private void injectedRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.client != null) {
-            RenderSystem.setShaderTexture(0, SERVER_TABS_TEXTURE);
-            drawTexture(matrices, 0, 20, 0, 0, 50, 20, 256, 256);
             if (featherStack != null)
                 this.client.getItemRenderer().renderInGui(featherStack, 42, 2);
             if (currentTab == 0) {
