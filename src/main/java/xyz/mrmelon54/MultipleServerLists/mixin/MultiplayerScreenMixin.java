@@ -1,6 +1,8 @@
 package xyz.mrmelon54.MultipleServerLists.mixin;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
@@ -12,6 +14,7 @@ import net.minecraft.item.Items;
 import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
+import net.minecraft.util.Identifier;
 import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
 import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
 import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
@@ -25,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MultiplayerScreen.class)
 public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenDuckProvider {
+    private static Identifier SERVER_TABS_TEXTURE = new Identifier("multiple-server-lists", "textures/gui/server-tabs.png");
     private int currentTab = 0;
     private ButtonWidget editServerListNameButton;
     private ItemStack featherStack;
@@ -74,6 +78,8 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
     @Inject(method = "render", at = @At("TAIL"))
     private void injectedRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.client != null) {
+            RenderSystem.setShaderTexture(0, SERVER_TABS_TEXTURE);
+            drawTexture(matrices, 0, 20, 0, 0, 50, 20, 256, 256);
             if (featherStack != null)
                 this.client.getItemRenderer().renderInGui(featherStack, 42, 2);
             if (currentTab == 0) {
