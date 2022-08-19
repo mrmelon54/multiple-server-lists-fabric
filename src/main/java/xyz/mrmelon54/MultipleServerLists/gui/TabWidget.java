@@ -64,17 +64,18 @@ public class TabWidget extends PressableWidget {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, SERVER_TABS_TEXTURE);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        boolean hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+        int w = width;
+        if (w < 0) w = Math.min(-width, textRenderer.getWidth(getMessage()) + 12);
+        boolean hovered = mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + height;
         int i = hovered ? 1 : 0;
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-        this.drawTexture(matrices, x, y, 0, i * 20, width / 2, height);
-        this.drawTexture(matrices, x + width / 2, y, 200 - width / 2, i * 20, width / 2, height);
-        //this.renderBackground(matrices, minecraftClient, mouseX, mouseY);
-        int j = this.active ? 16777215 : 10526880;
-        drawCenteredText(matrices, textRenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
-        if (this.isHovered()) this.renderTooltip(matrices, mouseX, mouseY);
+        drawTexture(matrices, x, y, 0, i * 20, w / 2, height);
+        drawTexture(matrices, x + w / 2, y, 200 - w / 2, i * 20, w / 2, height);
+        int j = active ? 16777215 : 10526880;
+        drawCenteredText(matrices, textRenderer, getMessage(), x + w / 2, y + (height - 8) / 2, j | MathHelper.ceil(alpha * 255.0F) << 24);
+        if (isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
 
     public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {

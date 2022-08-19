@@ -78,7 +78,7 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
 
     private void refreshTabs() {
         this.children().removeIf((Predicate<Element>) element -> element instanceof TabWidget);
-        this.addDrawableChild(new TabWidget(0, 32, 200, 20, Text.literal("First Tab"), button -> System.out.println("Pressed Tab")));
+        this.addDrawableChild(new TabWidget(0, 32, -200, 20, Text.literal("First Tab"), button -> System.out.println("Pressed Tab")));
     }
 
     @ModifyConstant(method = "init", constant = @Constant(intValue = 32))
