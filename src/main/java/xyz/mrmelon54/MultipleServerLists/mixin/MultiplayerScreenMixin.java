@@ -1,7 +1,6 @@
 package xyz.mrmelon54.MultipleServerLists.mixin;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
@@ -19,13 +18,11 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import xyz.mrmelon54.MultipleServerLists.client.gui.components.TabViewWidget;
 import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
 import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
 import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
-import xyz.mrmelon54.MultipleServerLists.gui.TabWidget;
 import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
-
-import java.util.function.Predicate;
 
 @Mixin(MultiplayerScreen.class)
 public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenDuckProvider {
@@ -72,13 +69,8 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
                     this.client.setScreen(editListNameScreen);
             }
         }));
+        this.addDrawableChild(new TabViewWidget(client,width,32));
         reloadServerList();
-        refreshTabs();
-    }
-
-    private void refreshTabs() {
-        this.children().removeIf((Predicate<Element>) element -> element instanceof TabWidget);
-        this.addDrawableChild(new TabWidget(0, 32, -200, 20, Text.literal("First Tab"), button -> System.out.println("Pressed Tab")));
     }
 
     @ModifyConstant(method = "init", constant = @Constant(intValue = 32))
