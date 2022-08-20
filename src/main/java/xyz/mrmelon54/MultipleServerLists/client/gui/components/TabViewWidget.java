@@ -5,8 +5,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -15,12 +16,16 @@ import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.TabWidget> {
+    private static final Identifier SERVER_TABS_TEXTURE = new Identifier("multiple-server-lists", "textures/gui/server-tabs.png");
+
     public List<CustomFileServerList> serverLists = new ArrayList<>();
-    private int scrollX = 30;
+    private int scrollX = 0;
     private int totalWidth;
+    private final ButtonWidget scrollLeft;
+    private final ButtonWidget scrollRight;
+    private final ButtonWidget scrollDropdown;
 
     public TabViewWidget(MinecraftClient mc, int width, int top) {
         super(mc, width, 20, top, top + 20, 20);
@@ -28,18 +33,22 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
         setRenderHeader(false, 0);
         setRenderHorizontalShadows(false);
         setRenderSelection(true);
+        this.scrollLeft = new TexturedButtonWidget(0, top, 20, 20, 0, 80, 20, SERVER_TABS_TEXTURE, button -> scrollX -= 80);
+        this.scrollRight = new TexturedButtonWidget(width - 40, top, 20, 20, 20, 80, 20, SERVER_TABS_TEXTURE, button -> scrollX += 80);
+        this.scrollDropdown = new TexturedButtonWidget(width - 20, top, 20, 20, 40, 80, 20, SERVER_TABS_TEXTURE, button -> System.out.println("Showing tab dropdown"));
         serverLists.add(new CustomFileServerList(mc, 1));
         serverLists.add(new CustomFileServerList(mc, 2));
         serverLists.add(new CustomFileServerList(mc, 3));
         serverLists.add(new CustomFileServerList(mc, 4));
         serverLists.add(new CustomFileServerList(mc, 5));
         serverLists.add(new CustomFileServerList(mc, 6));
+        serverLists.add(new CustomFileServerList(mc, 7));
+        serverLists.add(new CustomFileServerList(mc, 8));
+        serverLists.add(new CustomFileServerList(mc, 9));
+        serverLists.add(new CustomFileServerList(mc, 10));
+        serverLists.add(new CustomFileServerList(mc, 11));
+        serverLists.add(new CustomFileServerList(mc, 12));
         refresh();
-    }
-
-    @Override
-    public Optional<Element> hoveredElement(double mouseX, double mouseY) {
-        return super.hoveredElement(mouseX, mouseY);
     }
 
     public void refresh() {
@@ -47,7 +56,7 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
         c.clear();
         int totalWidth = 0;
         for (CustomFileServerList serverList : serverLists) {
-            TabWidget t = new TabWidget(-200, serverList, button -> System.out.println("change to tab " + serverList.getName()));
+            TabWidget t = new TabWidget(-200, serverList, button -> System.out.println("change to tab " + button.serverList.getName()));
             totalWidth += t.getActualWidth();
             c.add(t);
         }
@@ -56,27 +65,64 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        int scrollX = getActualScrollAmount();
-        int w = -scrollX;
+        boolean needsScroll = totalWidth >= width;
+        int scrollX = getActualScrollAmount(needsScroll ? 60 : 0);
+        int sw = width + (needsScroll ? -40 : 0);
+        int xx = needsScroll ? 20 : 0;
+        int w = xx - scrollX;
         List<TabWidget> children = children();
         for (int i = 0; i < children.size(); i++) {
             TabWidget child = children.get(i);
             int a = child.getActualWidth();
-            if (w <= width && w + a >= 0) {
-                boolean hovered = mouseX >= w && mouseX < w + a && mouseY >= top && mouseY < bottom;
-                child.render(matrices, i, this.top, w, a, 20, mouseX, mouseY, hovered, delta);
+            if (w <= sw && w + a >= 0) {
+                boolean hovered = mouseX >= xx && mouseX < sw && mouseX >= w && mouseX < w + a && mouseY >= top && mouseY < bottom;
+                child.render(matrices, i, this.top, w, sw - w + a, 20, mouseX, mouseY, hovered, delta);
             }
             w += a;
         }
+        if (needsScroll) {
+            matrices.push();
+            matrices.translate(0, 0, 50);
+            this.scrollLeft.render(matrices, mouseX, mouseY, delta);
+            this.scrollRight.render(matrices, mouseX, mouseY, delta);
+            this.scrollDropdown.render(matrices, mouseX, mouseY, delta);
+            matrices.pop();
+        }
     }
 
-    private int getActualScrollAmount() {
-        return Math.min(this.scrollX, width - totalWidth);
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        boolean needsScroll = totalWidth >= width;
+        int sw = width + (needsScroll ? -40 : 0);
+        int scrollX = getActualScrollAmount(sw);
+        int w = needsScroll ? 20 - scrollX : 0;
+        if (needsScroll) {
+            if (this.scrollLeft.isMouseOver(mouseX, mouseY))
+                return this.scrollLeft.mouseClicked(mouseX, mouseY, button);
+            if (this.scrollRight.isMouseOver(mouseX, mouseY))
+                return this.scrollRight.mouseClicked(mouseX, mouseY, button);
+            if (this.scrollDropdown.isMouseOver(mouseX, mouseY))
+                return this.scrollDropdown.mouseClicked(mouseX, mouseY, button);
+        }
+        List<TabWidget> children = children();
+        for (TabWidget child : children) {
+            int a = child.getActualWidth();
+            if (w <= sw && w + a >= 0 && mouseX >= w && mouseX < w + a && mouseY >= top && mouseY < bottom)
+                return child.mouseClicked(mouseX, mouseY, button);
+            w += a;
+        }
+        return super.
+
+                mouseClicked(mouseX, mouseY, button);
+    }
+
+    private int getActualScrollAmount(int sw) {
+        if (scrollX < 0) scrollX = 0;
+        if (scrollX >= totalWidth - sw) scrollX = totalWidth - sw;
+        return scrollX;
     }
 
     public class TabWidget extends AlwaysSelectedEntryListWidget.Entry<TabWidget> {
-        private static final Identifier SERVER_TABS_TEXTURE = new Identifier("multiple-server-lists", "textures/gui/server-tabs.png");
-
         private final int width;
         private final CustomFileServerList serverList;
         private final Text message;
@@ -119,12 +165,12 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
             RenderSystem.setShaderTexture(0, SERVER_TABS_TEXTURE);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             int w = getActualWidth();
-            int i = hovered ? 1 : 0;
+            int i = hovered ? 2 : 1;
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
-            drawTexture(matrices, x, y, 0, i * 20, w / 2, entryHeight);
-            drawTexture(matrices, x + w / 2, y, 200 - w / 2, i * 20, w / 2, entryHeight);
+            drawTexture(matrices, x, y, 0, i * 20, Math.min(entryWidth, w / 2), entryHeight);
+            drawTexture(matrices, x + w / 2, y, 200 - w / 2, i * 20, Math.min(entryWidth - w / 2, w / 2), entryHeight);
             drawCenteredText(matrices, textRenderer, message, x + w / 2, y + (height - 8) / 2, 0xffffffff);
         }
 
