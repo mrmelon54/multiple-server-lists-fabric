@@ -83,8 +83,11 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
         if (needsScroll) {
             matrices.push();
             matrices.translate(0, 0, 50);
-            this.scrollLeft.render(matrices, mouseX, mouseY, delta);
-            this.scrollRight.render(matrices, mouseX, mouseY, delta);
+            RenderSystem.setShaderTexture(0, SERVER_TABS_TEXTURE);
+            if (scrollX > 0) this.scrollLeft.render(matrices, mouseX, mouseY, delta);
+            else drawTexture(matrices, 0, top, 0, 60, 20, 20, 256, 256);
+            if (scrollX < totalWidth - sw) this.scrollRight.render(matrices, mouseX, mouseY, delta);
+            else drawTexture(matrices, sw, top, 20, 60, 20, 20, 256, 256);
             this.scrollDropdown.render(matrices, mouseX, mouseY, delta);
             matrices.pop();
         }
@@ -111,9 +114,7 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
                 return child.mouseClicked(mouseX, mouseY, button);
             w += a;
         }
-        return super.
-
-                mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     private int getActualScrollAmount(int sw) {
