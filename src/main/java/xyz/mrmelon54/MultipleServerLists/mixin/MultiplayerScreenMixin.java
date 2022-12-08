@@ -9,19 +9,17 @@ import net.minecraft.client.option.ServerList;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
-import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
-import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
-import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
+import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 
 @Mixin(MultiplayerScreen.class)
 public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenDuckProvider {
@@ -49,25 +47,25 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
         if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
             entryListWidgetDuckProvider.setRefreshCallback(this::reloadServerList);
 
-        this.addDrawableChild(new ButtonWidget(0, 0, 20, 20, Text.literal("<"), (button) -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("<"), (button) -> {
             currentTab--;
             if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                 entryListWidgetDuckProvider.resetScrollPosition();
             reloadServerList();
-        }));
-        this.addDrawableChild(new ButtonWidget(20, 0, 20, 20, Text.literal(">"), (button) -> {
+        }).dimensions(0, 0, 20, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.literal(">"), (button) -> {
             currentTab++;
             if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                 entryListWidgetDuckProvider.resetScrollPosition();
             reloadServerList();
-        }));
-        this.editServerListNameButton = this.addDrawableChild(new ButtonWidget(40, 0, 20, 20, Text.literal(""), (button) -> {
+        }).dimensions(20, 0, 20, 20).build());
+        this.editServerListNameButton = this.addDrawableChild(ButtonWidget.builder(Text.literal(""), (button) -> {
             if (serverList instanceof CustomFileServerList customFileServerList) {
                 EditListNameScreen editListNameScreen = new EditListNameScreen(Text.translatable("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
                 if (this.client != null)
                     this.client.setScreen(editListNameScreen);
             }
-        }));
+        }).dimensions(40, 0, 20, 20).build());
         reloadServerList();
     }
 

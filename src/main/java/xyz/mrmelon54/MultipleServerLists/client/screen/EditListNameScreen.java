@@ -10,10 +10,9 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
-import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 import org.lwjgl.glfw.GLFW;
+import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 
 @Environment(EnvType.CLIENT)
 public class EditListNameScreen extends Screen {
@@ -44,15 +43,16 @@ public class EditListNameScreen extends Screen {
             return;
         }
 
-        this.renameButton = this.addDrawableChild(new ButtonWidget(this.x + 7, this.y + 45, 50, 20, Text.translatable("multiple-server-lists.screen.edit-list-name.button.rename"), (button) -> {
+        this.renameButton = this.addDrawableChild(ButtonWidget.builder(Text.translatable("multiple-server-lists.screen.edit-list-name.button.rename"), (button) -> {
             String a = this.nameField.getText();
             if (isValidName(a)) {
                 serverList.setName(a);
                 serverList.saveFile();
                 close();
             }
-        }));
-        this.addDrawableChild(new ButtonWidget(this.x + 119, this.y + 45, 50, 20, Text.translatable("multiple-server-lists.screen.edit-list-name.button.cancel"), (button) -> close()));
+        }).dimensions(this.x + 7, this.y + 45, 50, 20).build());
+
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("multiple-server-lists.screen.edit-list-name.button.cancel"), (button) -> close()).dimensions(this.x + 119, this.y + 45, 50, 20).build());
 
         this.nameField = new TextFieldWidget(this.textRenderer, this.x + 62, this.y + 24, 103, 12, Text.translatable("container.repair"));
         this.nameField.setFocusUnlocked(false);
@@ -87,7 +87,7 @@ public class EditListNameScreen extends Screen {
     @Override
     public void removed() {
         super.removed();
-        if (this.client != null) this.client.keyboard.setRepeatEvents(false);
+        //if (this.client != null) this.client.keyboard.setRepeatEvents(false);
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
@@ -102,7 +102,7 @@ public class EditListNameScreen extends Screen {
         this.parent.render(matrices, -2000, -2000, delta);
         this.fillGradient(matrices, 0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
         this.drawTexture(matrices, this.x, this.y, 0, 0, backgroundWidth, backgroundHeight);
