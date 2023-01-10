@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import xyz.mrmelon54.MultipleServerLists.client.MultipleServerListsClient;
 import xyz.mrmelon54.MultipleServerLists.client.gui.components.TabViewWidget;
 import xyz.mrmelon54.MultipleServerLists.client.screen.EditListNameScreen;
 import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
@@ -27,6 +28,7 @@ import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 @Mixin(MultiplayerScreen.class)
 public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenDuckProvider {
     private int currentTab = 0;
+    private MultipleServerListsClient msl;
     private ButtonWidget editServerListNameButton;
     private ItemStack featherStack;
 
@@ -45,31 +47,35 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
 
     @Inject(method = "init", at = @At("TAIL"))
     private void injectedInit(CallbackInfo ci) {
+        msl = MultipleServerListsClient.getInstance();
+        msl.setMultiplayerScreen(this);
         featherStack = new ItemStack(Items.FEATHER);
 
         if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
             entryListWidgetDuckProvider.setRefreshCallback(this::reloadServerList);
 
-        this.addDrawableChild(new ButtonWidget(0, 0, 20, 20, Text.literal("<"), (button) -> {
-            currentTab--;
-            if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
-                entryListWidgetDuckProvider.resetScrollPosition();
-            reloadServerList();
-        }));
-        this.addDrawableChild(new ButtonWidget(20, 0, 20, 20, Text.literal(">"), (button) -> {
-            currentTab++;
-            if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
-                entryListWidgetDuckProvider.resetScrollPosition();
-            reloadServerList();
-        }));
-        this.editServerListNameButton = this.addDrawableChild(new ButtonWidget(40, 0, 20, 20, Text.literal(""), (button) -> {
-            if (serverList instanceof CustomFileServerList customFileServerList) {
-                EditListNameScreen editListNameScreen = new EditListNameScreen(Text.translatable("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
-                if (this.client != null)
-                    this.client.setScreen(editListNameScreen);
-            }
-        }));
-        this.addDrawableChild(new TabViewWidget(client,width,32));
+        if (msl.configManager.config.ShowTabs) this.addDrawableChild(new TabViewWidget(client, this, width, 32));
+        else {
+            this.addDrawableChild(new ButtonWidget(0, 0, 20, 20, Text.literal("<"), (button) -> {
+                currentTab--;
+                if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
+                    entryListWidgetDuckProvider.resetScrollPosition();
+                reloadServerList();
+            }));
+            this.addDrawableChild(new ButtonWidget(20, 0, 20, 20, Text.literal(">"), (button) -> {
+                currentTab++;
+                if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
+                    entryListWidgetDuckProvider.resetScrollPosition();
+                reloadServerList();
+            }));
+            this.editServerListNameButton = this.addDrawableChild(new ButtonWidget(40, 0, 20, 20, Text.literal(""), (button) -> {
+                if (serverList instanceof CustomFileServerList customFileServerList) {
+                    EditListNameScreen editListNameScreen = new EditListNameScreen(Text.translatable("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
+                    if (this.client != null)
+                        this.client.setScreen(editListNameScreen);
+                }
+            }));
+        }
         reloadServerList();
     }
 
@@ -81,15 +87,17 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
     @Inject(method = "render", at = @At("TAIL"))
     private void injectedRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.client != null) {
-            if (featherStack != null)
-                this.client.getItemRenderer().renderInGui(featherStack, 42, 2);
-            if (currentTab == 0) {
-                this.client.textRenderer.draw(matrices, Text.literal("Main"), 64, 6, 0xffffff);
-            } else {
-                if (serverList instanceof CustomFileServerList customFileServerList)
-                    this.client.textRenderer.draw(matrices, Text.literal(customFileServerList.getName()), 64, 6, 0xffffff);
-                else
-                    this.client.textRenderer.draw(matrices, Text.literal("Page " + currentTab), 64, 6, 0xffffff);
+            if (!msl.configManager.config.ShowTabs) {
+                if (featherStack != null)
+                    this.client.getItemRenderer().renderInGui(featherStack, 42, 2);
+                if (currentTab == 0) {
+                    this.client.textRenderer.draw(matrices, Text.literal("Main"), 64, 6, 0xffffff);
+                } else {
+                    if (serverList instanceof CustomFileServerList customFileServerList)
+                        this.client.textRenderer.draw(matrices, Text.literal(customFileServerList.getName()), 64, 6, 0xffffff);
+                    else
+                        this.client.textRenderer.draw(matrices, Text.literal("Page " + currentTab), 64, 6, 0xffffff);
+                }
             }
         }
     }
@@ -130,5 +138,6 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
     @Override
     public void setCurrentTab(int currentTab) {
         this.currentTab = currentTab;
+        reloadServerList();
     }
 }

@@ -10,10 +10,9 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
-import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 import org.lwjgl.glfw.GLFW;
+import xyz.mrmelon54.MultipleServerLists.util.CustomFileServerList;
 
 @Environment(EnvType.CLIENT)
 public class EditListNameScreen extends Screen {
@@ -99,7 +98,10 @@ public class EditListNameScreen extends Screen {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        matrices.push();
+        matrices.translate(0, 0, -5);
         this.parent.render(matrices, -2000, -2000, delta);
+        matrices.pop();
         this.fillGradient(matrices, 0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
