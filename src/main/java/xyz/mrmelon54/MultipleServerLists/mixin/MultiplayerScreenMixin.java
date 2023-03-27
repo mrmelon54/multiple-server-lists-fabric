@@ -73,7 +73,7 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
     private void injectedRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.client != null) {
             if (featherStack != null)
-                this.client.getItemRenderer().renderInGui(featherStack, 42, 2);
+                this.client.getItemRenderer().renderInGui(new MatrixStack(), featherStack, 42, 2);
             if (currentTab == 0) {
                 this.client.textRenderer.draw(matrices, Text.literal("Main"), 64, 6, 0xffffff);
             } else {

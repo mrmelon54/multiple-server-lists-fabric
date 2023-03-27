@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.+'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
     id 'org.ajoberstar.grgit' version '4.1.0'
 }
 
@@ -93,4 +93,8 @@ def getVersionMetadata() {
 
     // No tracking information could be found about the build
     return "unknown"
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/MultipleServerLists.accesswidener")
 }
