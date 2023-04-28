@@ -18,7 +18,7 @@ public class ServerEntryMixin implements ServerEntryDuckProvider {
     @Override
     public void extendedRender(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, boolean isScrollable) {
         RenderSystem.setShaderTexture(0, SERVER_SELECTION_TEXTURE);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         int t = x + entryWidth;
         int u = isScrollable ? t + 6 : t;

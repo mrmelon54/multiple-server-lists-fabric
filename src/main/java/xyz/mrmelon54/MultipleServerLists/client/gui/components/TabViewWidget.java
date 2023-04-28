@@ -49,14 +49,14 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
         });
         this.scrollDropdown = new TexturedButtonWidget(width - 40, top, 20, 20, 40, 80, 20, SERVER_TABS_TEXTURE, button -> {
         });
-        this.editServerListNameButton = new ButtonWidget(width - 20, top, 20, 20, Text.literal(""), (button) -> {
+        this.editServerListNameButton = ButtonWidget.builder(Text.literal(""), (button) -> {
             int tab = multipleServerListsClient.getTab() - 1;
             if (tab < 0 || tab > serverLists.size()) return;
             CustomFileServerList currentServerList = serverLists.get(tab);
             EditListNameScreen editListNameScreen = new EditListNameScreen(Text.translatable("multiple-server-lists.screen.edit-list-name.title"), screen, currentServerList);
             if (this.client != null)
                 this.client.setScreen(editListNameScreen);
-        });
+        }).dimensions(width - 20, top, 20, 20).build();
 
         refresh();
     }
@@ -115,11 +115,11 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
         if (selectedTab > 0) this.editServerListNameButton.render(matrices, mouseX, mouseY, delta);
         else {
             RenderSystem.setShaderTexture(0, ButtonWidget.WIDGETS_TEXTURE);
-            this.drawTexture(matrices, width - 20, top, 0, 46, 10, 20);
-            this.drawTexture(matrices, width - 10, top, 200 - 10, 46, 10, 20);
+            drawTexture(matrices, width - 20, top, 0, 46, 10, 20);
+            drawTexture(matrices, width - 10, top, 200 - 10, 46, 10, 20);
         }
         if (featherStack != null)
-            this.client.getItemRenderer().renderInGui(featherStack, width - 18, top + 2);
+            this.client.getItemRenderer().renderInGui(matrices, featherStack, width - 18, top + 2);
         matrices.pop();
     }
 
@@ -196,7 +196,7 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();
             TextRenderer textRenderer = minecraftClient.textRenderer;
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderTexture(0, SERVER_TABS_TEXTURE);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             int w = getActualWidth();
@@ -206,7 +206,7 @@ public class TabViewWidget extends AlwaysSelectedEntryListWidget<TabViewWidget.T
             RenderSystem.enableDepthTest();
             drawTexture(matrices, x, y, 0, i * 20, Math.min(entryWidth, w / 2), entryHeight);
             drawTexture(matrices, x + w / 2, y, 200 - w / 2, i * 20, Math.min(entryWidth - w / 2, w / 2), entryHeight);
-            drawCenteredText(matrices, textRenderer, message, x + w / 2, y + (height - 8) / 2, 0xffffffff);
+            drawCenteredTextWithShadow(matrices, textRenderer, message, x + w / 2, y + (height - 8) / 2, 0xffffffff);
         }
 
         public int getActualWidth() {

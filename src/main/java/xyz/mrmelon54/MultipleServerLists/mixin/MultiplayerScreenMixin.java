@@ -56,25 +56,25 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
 
         if (msl.configManager.config.ShowTabs) this.addDrawableChild(new TabViewWidget(client, this, width, 32));
         else {
-            this.addDrawableChild(new ButtonWidget(0, 0, 20, 20, Text.literal("<"), (button) -> {
+            this.addDrawableChild(ButtonWidget.builder( Text.literal("<"), (button) -> {
                 currentTab--;
                 if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                     entryListWidgetDuckProvider.resetScrollPosition();
                 reloadServerList();
-            }));
-            this.addDrawableChild(new ButtonWidget(20, 0, 20, 20, Text.literal(">"), (button) -> {
+            }).dimensions(0, 0, 20, 20).build());
+            this.addDrawableChild( ButtonWidget.builder( Text.literal(">"), (button) -> {
                 currentTab++;
                 if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                     entryListWidgetDuckProvider.resetScrollPosition();
                 reloadServerList();
-            }));
-            this.editServerListNameButton = this.addDrawableChild(new ButtonWidget(40, 0, 20, 20, Text.literal(""), (button) -> {
+            }).dimensions(20, 0, 20, 20).build());
+            this.editServerListNameButton = this.addDrawableChild( ButtonWidget.builder( Text.literal(""), (button) -> {
                 if (serverList instanceof CustomFileServerList customFileServerList) {
                     EditListNameScreen editListNameScreen = new EditListNameScreen(Text.translatable("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
                     if (this.client != null)
                         this.client.setScreen(editListNameScreen);
                 }
-            }));
+            }).dimensions(40, 0, 20, 20).build());
         }
         reloadServerList();
     }
@@ -89,7 +89,7 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
         if (this.client != null) {
             if (!msl.configManager.config.ShowTabs) {
                 if (featherStack != null)
-                    this.client.getItemRenderer().renderInGui(featherStack, 42, 2);
+                    this.client.getItemRenderer().renderInGui(matrices, featherStack, 42, 2);
                 if (currentTab == 0) {
                     this.client.textRenderer.draw(matrices, Text.literal("Main"), 64, 6, 0xffffff);
                 } else {

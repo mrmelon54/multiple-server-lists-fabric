@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Mixin(EntryListWidget.class)
-public abstract class EntryListWidgetMixin<E extends EntryListWidget.Entry<E>> implements EntryListWidgetDuckProvider {
+public abstract class EntryListWidgetMixin<E> implements EntryListWidgetDuckProvider {
     private Runnable refreshCallback;
 
     @Shadow
@@ -50,9 +50,6 @@ public abstract class EntryListWidgetMixin<E extends EntryListWidget.Entry<E>> i
 
     @Shadow
     protected abstract int getEntryCount();
-
-    @Shadow
-    protected abstract E getEntry(int index);
 
     @Shadow
     public abstract int getMaxScroll();
@@ -85,7 +82,7 @@ public abstract class EntryListWidgetMixin<E extends EntryListWidget.Entry<E>> i
                 int l = this.getRowBottom(j);
                 if (l >= this.top && k <= this.bottom) {
                     int n = this.itemHeight - 4;
-                    E entry = this.getEntry(j);
+                    E entry = this.children().get(j);
                     int o = this.getRowWidth();
                     int r = this.getRowLeft();
                     if (entry instanceof ServerEntryDuckProvider serverEntryDuckProvider)
