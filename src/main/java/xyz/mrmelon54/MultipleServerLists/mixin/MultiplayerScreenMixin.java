@@ -56,19 +56,19 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
 
         if (msl.configManager.config.ShowTabs) this.addDrawableChild(new TabViewWidget(client, this, width, 32));
         else {
-            this.addDrawableChild(ButtonWidget.builder( Text.literal("<"), (button) -> {
+            this.addDrawableChild(ButtonWidget.builder(Text.literal("<"), (button) -> {
                 currentTab--;
                 if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                     entryListWidgetDuckProvider.resetScrollPosition();
                 reloadServerList();
             }).dimensions(0, 0, 20, 20).build());
-            this.addDrawableChild( ButtonWidget.builder( Text.literal(">"), (button) -> {
+            this.addDrawableChild(ButtonWidget.builder(Text.literal(">"), (button) -> {
                 currentTab++;
                 if (this.serverListWidget instanceof EntryListWidgetDuckProvider entryListWidgetDuckProvider)
                     entryListWidgetDuckProvider.resetScrollPosition();
                 reloadServerList();
             }).dimensions(20, 0, 20, 20).build());
-            this.editServerListNameButton = this.addDrawableChild( ButtonWidget.builder( Text.literal(""), (button) -> {
+            this.editServerListNameButton = this.addDrawableChild(ButtonWidget.builder(Text.literal(""), (button) -> {
                 if (serverList instanceof CustomFileServerList customFileServerList) {
                     EditListNameScreen editListNameScreen = new EditListNameScreen(Text.translatable("multiple-server-lists.screen.edit-list-name.title"), this, customFileServerList);
                     if (this.client != null)
@@ -107,8 +107,10 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
         if (currentTab < 0) currentTab = 0;
 
         serverList = this.getServerListForTab(currentTab);
+        if (serverList == null) return;
         serverList.loadFile();
-        this.serverListWidget.setServers(serverList);
+
+        if (serverListWidget != null) this.serverListWidget.setServers(serverList);
 
         if (this.editServerListNameButton != null)
             this.editServerListNameButton.active = serverList instanceof CustomFileServerList;
@@ -117,7 +119,8 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
     @Override
     public ServerList getServerListForTab(int tab) {
         if (tab < 0) return null;
-        return tab == 0 ? new ServerList(this.client) : new CustomFileServerList(this.client, tab);
+        MinecraftClient client = MinecraftClient.getInstance();
+        return tab == 0 ? new ServerList(client) : new CustomFileServerList(client, tab);
     }
 
     @Override
