@@ -1,14 +1,12 @@
 package xyz.mrmelon54.MultipleServerLists.client.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
@@ -98,19 +96,15 @@ public class EditListNameScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.parent.render(matrices, -2000, -2000, delta);
-        this.fillGradient(matrices, 0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        this.parent.render(context, -2000, -2000, delta);
+        context.fillGradient(0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-        this.drawTexture(matrices, this.x, this.y, 0, 0, backgroundWidth, backgroundHeight);
-        this.drawTexture(matrices, this.x + 59, this.y + 20, 0, backgroundHeight, 110, 16);
+        context.drawTexture(BACKGROUND_TEXTURE, this.x, this.y, 0, 0, backgroundWidth, backgroundHeight);
+        context.drawTexture(BACKGROUND_TEXTURE, this.x + 59, this.y + 20, 0, backgroundHeight, 110, 16);
 
-        if (this.nameField != null) this.nameField.render(matrices, mouseX, mouseY, delta);
-
-        super.render(matrices, mouseX, mouseY, delta);
+        if (this.nameField != null) this.nameField.render(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
     }
 
     private void onRenamed(String value) {

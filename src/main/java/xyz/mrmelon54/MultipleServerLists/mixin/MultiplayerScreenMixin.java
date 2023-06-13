@@ -1,12 +1,12 @@
 package xyz.mrmelon54.MultipleServerLists.mixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.ServerList;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
@@ -70,17 +70,17 @@ public class MultiplayerScreenMixin extends Screen implements MultiplayerScreenD
     }
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void injectedRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void injectedRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.client != null) {
-            if (featherStack != null)
-                this.client.getItemRenderer().renderInGui(new MatrixStack(), featherStack, 42, 2);
+            if (featherStack != null) context.drawItem(featherStack, 42, 2);
             if (currentTab == 0) {
-                this.client.textRenderer.draw(matrices, Text.literal("Main"), 64, 6, 0xffffff);
+                context.drawText(this.client.textRenderer, Text.literal("Main"), 64, 6, 0xffffff, true);
             } else {
-                if (serverList instanceof CustomFileServerList customFileServerList)
-                    this.client.textRenderer.draw(matrices, Text.literal(customFileServerList.getName()), 64, 6, 0xffffff);
-                else
-                    this.client.textRenderer.draw(matrices, Text.literal("Page " + currentTab), 64, 6, 0xffffff);
+                Text text = serverList instanceof CustomFileServerList customFileServerList
+                        ? Text.literal(customFileServerList.getName())
+                        : Text.literal("Page " + currentTab);
+
+                context.drawText(this.client.textRenderer, text, 64, 6, 0xffffff, true);
             }
         }
     }

@@ -1,15 +1,12 @@
 package xyz.mrmelon54.MultipleServerLists.mixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.ServerList;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
-import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
-import xyz.mrmelon54.MultipleServerLists.duck.ServerEntryDuckProvider;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.mrmelon54.MultipleServerLists.duck.EntryListWidgetDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.MultiplayerScreenDuckProvider;
+import xyz.mrmelon54.MultipleServerLists.duck.ServerEntryDuckProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -74,7 +74,7 @@ public abstract class EntryListWidgetMixin<E extends EntryListWidget.Entry<E>> i
     private double scrollAmount;
 
     @Inject(method = "renderList", at = @At("TAIL"))
-    private void injectedRenderList(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void injectedRenderList(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         //noinspection ConstantConditions
         if (((Object) this) instanceof MultiplayerServerListWidget) {
             E pEntry = this.getEntryAtOffsetY(mouseY);
@@ -89,7 +89,7 @@ public abstract class EntryListWidgetMixin<E extends EntryListWidget.Entry<E>> i
                     int o = this.getRowWidth();
                     int r = this.getRowLeft();
                     if (entry instanceof ServerEntryDuckProvider serverEntryDuckProvider)
-                        serverEntryDuckProvider.extendedRender(matrices, j, k, r, o, n, mouseX, mouseY, Objects.equals(pEntry, entry), delta, isScrollable);
+                        serverEntryDuckProvider.extendedRender(context, j, k, r, o, n, mouseX, mouseY, Objects.equals(pEntry, entry), delta, isScrollable);
                 }
             }
         }
