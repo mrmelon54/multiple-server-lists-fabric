@@ -1,5 +1,7 @@
 # Multiple Server Lists
 
+# Moved to [multiple_server_lists](https://github.com/mrmelon54/multiple_server_lists)
+
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W1607S8)
 
 Requires the [Fabric Loader](https://fabricmc.net/use/) and [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
